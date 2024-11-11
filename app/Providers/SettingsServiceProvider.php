@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Setting;
+use Exception;
 
 class SettingsServiceProvider extends ServiceProvider
 {
@@ -15,11 +16,15 @@ class SettingsServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Load settings at the start of the application
-        $this->app->singleton('settings', function () {
-            return Cache::remember('all_settings', 60 * 60, function () {
-                return Setting::all()->pluck('value', 'key')->toArray();
+        try {
+            $this->app->singleton('settings', function () {
+                return Cache::remember('all_settings', 60 * 60, function () {
+                    return Setting::all()->pluck('value', 'key')->toArray();
+                });
             });
-        });
+        } catch (Exception $e) {
+            // Log the error
+        }
     }
 
     /**
@@ -27,14 +32,17 @@ class SettingsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Initialize settings and configure application
-        $this->initSettings();
+        try {
+            // Initialize settings and configure application
+            $this->initSettings();
 
-        // Clear cache when settings table is updated
-        Setting::saved(function () {
-            Cache::forget('all_settings');
-            app()->make('settings'); // Refresh settings in cache
-        });
+            // Clear cache when settings table is updated
+            Setting::saved(function () {
+                Cache::forget('all_settings');
+                app()->make('settings'); // Refresh settings in cache
+            });
+        } catch (Exception $e) {
+        }
     }
 
     /**
@@ -42,8 +50,8 @@ class SettingsServiceProvider extends ServiceProvider
      */
     protected function initSettings(): void
     {
-        // Get all settings from cache
-        $settings = app('settings');
+        // Get settings from cache with a check for migrations or initial setup
+        $settings = app('settings') ?? [];
 
         // Override application name if "site_name" is set
         if (!empty($settings['site_name'])) {
