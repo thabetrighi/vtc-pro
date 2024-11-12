@@ -70,37 +70,37 @@ class ReservationListScreen extends Screen
                 ->method('filterStatus')
                 ->parameters(['status' => 'all'])
                 ->icon('bs.list')
-                ->class('btn btn-secondary'), // Styling as a secondary button
+                ->class('btn btn-secondary rounded'), // Styling as a secondary button
 
             Button::make(__('Pending'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'pending'])
                 ->icon('bs.hourglass-split')
-                ->class('btn btn-warning'),
+                ->class('btn btn-warning rounded'),
 
             Button::make(__('Ongoing'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'ongoing'])
                 ->icon('bs.arrow-right-circle')
-                ->class('btn btn-info'),
+                ->class('btn btn-info rounded'),
 
             Button::make(__('Completed'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'completed'])
                 ->icon('bs.check-circle')
-                ->class('btn btn-success'),
+                ->class('btn btn-success rounded'),
 
             Button::make(__('Canceled'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'canceled'])
                 ->icon('bs.x-circle')
-                ->class('btn btn-danger'),
+                ->class('btn btn-danger rounded'),
 
             Button::make(__('Past'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'past'])
                 ->icon('bs.clock-history')
-                ->class('btn btn-dark'),
+                ->class('btn btn-dark rounded'),
         ];
     }
 
