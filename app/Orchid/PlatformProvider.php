@@ -35,23 +35,29 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.house')
                 ->route(config('platform.index')),
 
+            // Menu::make(__('Reservations'))
+            //     ->icon('bs.ticket-detailed')
+            //     ->permission('platform.reservations.list')
+            //     ->badge(fn() => 6)
+            //     ->list([
+            //         Menu::make(__('All Reservations'))
+            //             ->route('platform.reservations')
+            //             ->permission('platform.reservations.list'),
+
+            //         Menu::make(__('Actual Reservations'))
+            //             ->route('platform.reservations.actual')
+            //             ->permission('platform.reservations.list'),
+
+            //         Menu::make(__('Past Reservations'))
+            //             ->route('platform.reservations.past')
+            //             ->permission('platform.reservations.list'),
+            //     ]),
+
             Menu::make(__('Reservations'))
                 ->icon('bs.ticket-detailed')
+                ->route('platform.reservations')
                 ->permission('platform.reservations.list')
-                ->badge(fn() => 6)
-                ->list([
-                    Menu::make(__('All Reservations'))
-                        ->route('platform.reservations')
-                        ->permission('platform.reservations.list'),
-
-                    Menu::make(__('Actual Reservations'))
-                        ->route('platform.reservations.actual')
-                        ->permission('platform.reservations.list'),
-
-                    Menu::make(__('Past Reservations'))
-                        ->route('platform.reservations.past')
-                        ->permission('platform.reservations.list'),
-                ]),
+                ->badge(fn() => 6),
 
             Menu::make(__('Institutions'))
                 ->icon('bs.buildings')
