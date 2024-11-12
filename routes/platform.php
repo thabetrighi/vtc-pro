@@ -106,6 +106,20 @@ Route::screen('reservations', ReservationListScreen::class)
         ->parent('platform.index')
         ->push(__('Reservations'), route('platform.reservations')));
 
+// Platform > Reservations
+Route::screen('actual-reservations', ReservationListScreen::class)
+    ->name('platform.reservations.actual')
+    ->breadcrumbs(fn(Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Reservations'), route('platform.reservations')));
+
+// Platform > Reservations
+Route::screen('past-reservations', ReservationListScreen::class)
+    ->name('platform.reservations.past')
+    ->breadcrumbs(fn(Trail $trail) => $trail
+        ->parent('platform.index')
+        ->push(__('Reservations'), route('platform.reservations')));
+
 // Platform > Institutions > Institution
 Route::screen('institutions/{institution}/edit', InstitutionEditScreen::class)
     ->name('platform.institutions.edit')

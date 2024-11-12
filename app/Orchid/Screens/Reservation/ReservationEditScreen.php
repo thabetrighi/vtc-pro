@@ -47,7 +47,7 @@ class ReservationEditScreen extends Screen
      */
     public function name(): ?string
     {
-        return $this->reservation->exists ? 'Edit Reservation' : 'Create Reservation';
+        return $this->reservation->exists ? 'Edit Reservation' : 'Reservation';
     }
 
     /**
@@ -55,7 +55,7 @@ class ReservationEditScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Manage reservation details, including pickup/destination locations, passenger information, and payment details.';
+        return '';
     }
 
     /**
@@ -77,11 +77,6 @@ class ReservationEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make('Download')
-                ->icon('bs.download')
-                ->method('downloadInvoice')
-                ->rawClick(),
-
             Button::make(__('Remove'))
                 ->icon('bs.trash3')
                 ->confirm(__('Once the reservation is deleted, all of its data will be permanently deleted.'))
@@ -109,15 +104,16 @@ class ReservationEditScreen extends Screen
                         ->title(__('Mode'))
                         ->options([
                             'transfer' => 'Transfer',
-                            'trip' => 'Trip',
+                            'ride' => 'Ride',
                         ])
-                        // ->help('Choose between a one-way transfer or round trip')
+                        ->help('Choose between a transfer or ride')
                         ->required(),
 
                     DateTimer::make('reservation.departure_at')
-                        ->title(__('Departure Time'))
-                        // ->help('Scheduled pickup date and time')
+                        ->title(__('Departure Date and Time'))
+                        ->help('Scheduled pickup date and time')
                         ->required()
+                        ->format24hr()
                         ->enableTime(),
                 ]),
             ])->title('Mode'),
@@ -125,31 +121,27 @@ class ReservationEditScreen extends Screen
             Layout::columns([
                 Layout::rows([
                     Input::make('reservation.pickup_location')
-                        ->title(__('Pickup Location'))
+                        ->title(__('Number and Street'))
                         // ->help('Main pickup location or landmark')
                         ->required()
-                        ->placeholder(__('Enter pickup location')),
+                        ->placeholder(__('Enter Number and Street')),
 
-                    Input::make('reservation.pickup_street')
-                        ->title(__('Pickup Street'))
-                        // ->help('Specific street address for pickup')
-                        ->nullable()
-                        ->placeholder(__('Enter pickup street')),
+                    Group::make([
+                        Input::make('reservation.pickup_zip_code')
+                            ->title(__('ZIP Code'))
+                            // ->help('ZIP/Postal code of pickup location')
+                            ->nullable()
+                            ->placeholder(__('Enter pickup ZIP code')),
 
-                    Input::make('reservation.pickup_zip_code')
-                        ->title(__('Pickup ZIP Code'))
-                        // ->help('ZIP/Postal code of pickup location')
-                        ->nullable()
-                        ->placeholder(__('Enter pickup ZIP code')),
-
-                    Input::make('reservation.pickup_city')
-                        ->title(__('Pickup City'))
-                        // ->help('City of pickup location')
-                        ->nullable()
-                        ->placeholder(__('Enter pickup city')),
+                        Input::make('reservation.pickup_city')
+                            ->title(__('City'))
+                            // ->help('City of pickup location')
+                            ->nullable()
+                            ->placeholder(__('Enter pickup city')),
+                    ]),
 
                     TextArea::make('reservation.pickup_note')
-                        ->title(__('Pickup Note'))
+                        ->title(__('Note'))
                         // ->help('Additional instructions for pickup location')
                         ->rows(3)
                         ->placeholder(__('Enter pickup note')),
@@ -158,31 +150,27 @@ class ReservationEditScreen extends Screen
 
                 Layout::rows([
                     Input::make('reservation.destination_location')
-                        ->title(__('Destination Location'))
+                        ->title(__('Number and Street'))
                         // ->help('Main destination location or landmark')
                         ->required()
-                        ->placeholder(__('Enter destination location')),
+                        ->placeholder(__('Enter Number and Street')),
 
-                    Input::make('reservation.destination_street')
-                        ->title(__('Destination Street'))
-                        // ->help('Specific street address for destination')
-                        ->nullable()
-                        ->placeholder(__('Enter destination street')),
+                    Group::make([
+                        Input::make('reservation.destination_zip_code')
+                            ->title(__('ZIP Code'))
+                            // ->help('ZIP/Postal code of destination')
+                            ->nullable()
+                            ->placeholder(__('Enter destination ZIP code')),
 
-                    Input::make('reservation.destination_zip_code')
-                        ->title(__('Destination ZIP Code'))
-                        // ->help('ZIP/Postal code of destination')
-                        ->nullable()
-                        ->placeholder(__('Enter destination ZIP code')),
-
-                    Input::make('reservation.destination_city')
-                        ->title(__('Destination City'))
-                        // ->help('City of destination')
-                        ->nullable()
-                        ->placeholder(__('Enter destination city')),
+                        Input::make('reservation.destination_city')
+                            ->title(__('City'))
+                            // ->help('City of destination')
+                            ->nullable()
+                            ->placeholder(__('Enter destination city')),
+                    ]),
 
                     TextArea::make('reservation.destination_note')
-                        ->title(__('Destination Note'))
+                        ->title(__('Note'))
                         // ->help('Additional instructions for destination')
                         ->rows(3)
                         ->placeholder(__('Enter destination note')),
@@ -193,10 +181,10 @@ class ReservationEditScreen extends Screen
             Layout::rows([
                 Group::make([
                     Input::make('reservation.passenger_name')
-                        ->title(__('Passenger Name'))
-                        ->help('Full name of the main passenger')
+                        ->title(__('Full Name'))
+                        ->help('First and Last name of the passenger')
                         ->required()
-                        ->placeholder(__('Enter passenger name')),
+                        ->placeholder(__('Enter First and Last name')),
 
                     Input::make('reservation.passenger_email')
                         ->title(__('Passenger Email'))
@@ -212,7 +200,7 @@ class ReservationEditScreen extends Screen
                         ->placeholder(__('Enter passenger phone')),
 
                     Input::make('reservation.passenger_count')
-                        ->title(__('Passenger Count'))
+                        ->title(__('Passengers Count'))
                         ->help('Total number of passengers')
                         ->type('number')
                         ->min(1)
@@ -244,12 +232,6 @@ class ReservationEditScreen extends Screen
 
                 // Additional Info
                 Group::make([
-                    Input::make('reservation.alt_phone')
-                        ->title(__('Alternate Phone'))
-                        // ->help('Secondary contact number if needed')
-                        ->type('tel')
-                        ->placeholder(__('Enter alternate phone')),
-
                     TextArea::make('reservation.additional_info')
                         ->title(__('Additional Information'))
                         ->help('Any other relevant details about the reservation')
@@ -283,7 +265,7 @@ class ReservationEditScreen extends Screen
     public function save(Reservation $reservation, Request $request)
     {
         $request->validate([
-            'reservation.mode'                 => ['required', 'in:transfer,trip'],
+            'reservation.mode'                 => ['required', 'in:transfer,ride'],
             'reservation.departure_at'         => ['required', 'date', 'after_or_equal:day'],
             'reservation.pickup_location'      => ['required_if:mode,transfer', 'string', 'max:255'],
             'reservation.pickup_street'        => ['nullable', 'string', 'max:255'],

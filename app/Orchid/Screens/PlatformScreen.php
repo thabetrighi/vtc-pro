@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Orchid\Screens;
 
-use App\Orchid\Layouts\Settings\ChartBarSetting;
-use App\Orchid\Layouts\Settings\ChartLineSetting;
+use App\Models\Reservation;
+use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 
@@ -19,33 +19,11 @@ class PlatformScreen extends Screen
     public function query(): iterable
     {
         return [
-            'charts'  => [
-                [
-                    'name'   => 'Completed Rides',
-                    'values' => [25, 40, 30, 35, 38, 52, 47],
-                    'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                ],
-                [
-                    'name'   => 'Revenue (USD)',
-                    'values' => [250, 500, 450, 480, 600, 750, 680],
-                    'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                ],
-                [
-                    'name'   => 'Active Drivers',
-                    'values' => [15, 20, 18, 22, 25, 28, 24],
-                    'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                ],
-                [
-                    'name'   => 'Customer Ratings',
-                    'values' => [4.5, 4.3, 4.8, 4.6, 4.7, 4.4, 4.6],
-                    'labels' => ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                ],
-            ],
             'metrics' => [
-                'rides'      => ['value' => number_format(1), 'diff' => 12.5],
-                'past_rides' => ['value' => number_format(3), 'diff' => 12.5],
-                'pending'    => ['value' => number_format(1), 'diff' => -15.2],
-                'revenue'    => '$' . number_format(8560),
+                'pending'   => Reservation::where('status', 'pending')->count(),
+                'ongoing'   => Reservation::where('status', 'ongoing')->count(),
+                'completed' => Reservation::where('status', 'completed')->count(),
+                'canceled'  => Reservation::where('status', 'canceled')->count(),
             ],
         ];
     }
@@ -55,7 +33,7 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return 'Taxi Booking Dashboard';
+        return settings('dashboard_name', 'Taxi Booking Dashboard');
     }
 
     /**
@@ -63,7 +41,7 @@ class PlatformScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'Real-time overview of booking metrics and performance';
+        return settings('dashboard_description', 'Real-time overview of booking metrics and performance');
     }
 
     /**
@@ -73,7 +51,11 @@ class PlatformScreen extends Screen
      */
     public function commandBar(): iterable
     {
-        return [];
+        return [
+            Link::make(__('New Reservation'))
+                ->icon('bs.ticket-perforated')
+                ->route('platform.reservations.create'),
+        ];
     }
 
     /**
@@ -85,18 +67,10 @@ class PlatformScreen extends Screen
     {
         return [
             Layout::metrics([
-                'Today\'s Bookings'    => 'metrics.rides',
-                'Previous Bookings'    => 'metrics.past_rides',
-                'Pending Requests'     => 'metrics.pending',
-                'Today\'s Revenue'     => 'metrics.revenue',
-            ]),
-
-            Layout::columns([
-                ChartLineSetting::make('charts', 'Weekly Performance')
-                    ->description('Track key metrics over the past week'),
-
-                ChartBarSetting::make('charts', 'Daily Statistics')
-                    ->description('Compare daily booking and revenue data'),
+                settings('metric_pending_title', 'Pending Reservations') => 'metrics.pending',
+                settings('metric_ongoing_title', 'Ongoing Reservations') => 'metrics.ongoing',
+                settings('metric_completed_title', 'Completed Reservations') => 'metrics.completed',
+                settings('metric_canceled_title', 'Canceled Reservations') => 'metrics.canceled',
             ]),
         ];
     }

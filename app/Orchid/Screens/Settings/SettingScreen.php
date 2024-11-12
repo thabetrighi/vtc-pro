@@ -210,12 +210,12 @@ class SettingScreen extends Screen
                     ->max(100)
                     ->placeholder('VAT percentage for transfer services'),
 
-                Input::make('settings.vat_trip')
-                    ->title('VAT for Trip')
+                Input::make('settings.vat_ride')
+                    ->title('VAT for Ride')
                     ->type('number')
                     ->min(0)
                     ->max(100)
-                    ->placeholder('VAT percentage for trip services'),
+                    ->placeholder('VAT percentage for ride services'),
             ]),
 
             Select::make('settings.invoice_languages')
@@ -283,7 +283,7 @@ class SettingScreen extends Screen
             'settings.note_bb'             => 'nullable|string|max:500',
 
             'settings.vat_transfer'        => 'nullable|numeric|min:0|max:100',
-            'settings.vat_trip'            => 'nullable|numeric|min:0|max:100',
+            'settings.vat_ride'            => 'nullable|numeric|min:0|max:100',
 
             // Invoice languages (must be selected from predefined options)
             'settings.invoice_languages'   => 'required|array',

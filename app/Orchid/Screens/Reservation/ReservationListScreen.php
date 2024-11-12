@@ -11,12 +11,12 @@ use App\Orchid\Layouts\Reservation\ReservationFiltersLayout;
 use App\Orchid\Layouts\Reservation\ReservationListLayout;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use Orchid\Screen\Actions\Link;
 use Orchid\Screen\Screen;
 use Orchid\Support\Facades\Layout;
 use Orchid\Support\Facades\Toast;
 use Barryvdh\DomPDF\Facade\Pdf as PDF;
 use Illuminate\Support\Facades\Mail;
+use Orchid\Screen\Actions\Button;
 
 class ReservationListScreen extends Screen
 {
@@ -48,7 +48,7 @@ class ReservationListScreen extends Screen
      */
     public function description(): ?string
     {
-        return 'A comprehensive list of all registered reservations, including their profiles and privileges.';
+        return '';
     }
 
     public function permission(): ?iterable
@@ -66,11 +66,44 @@ class ReservationListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make(__('Add'))
-                ->icon('bs.plus-circle')
-                ->route('platform.reservations.create'),
+            Button::make(__('All'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'all'])
+                ->icon('bs.list')
+                ->class('btn btn-secondary'), // Styling as a secondary button
+
+            Button::make(__('Pending'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'pending'])
+                ->icon('bs.hourglass-split')
+                ->class('btn btn-warning'),
+
+            Button::make(__('Ongoing'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'ongoing'])
+                ->icon('bs.arrow-right-circle')
+                ->class('btn btn-info'),
+
+            Button::make(__('Completed'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'completed'])
+                ->icon('bs.check-circle')
+                ->class('btn btn-success'),
+
+            Button::make(__('Canceled'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'canceled'])
+                ->icon('bs.x-circle')
+                ->class('btn btn-danger'),
+
+            Button::make(__('Past'))
+                ->method('filterStatus')
+                ->parameters(['status' => 'past'])
+                ->icon('bs.clock-history')
+                ->class('btn btn-dark'),
         ];
     }
+
 
     /**
      * The screen's layout elements.
@@ -202,5 +235,40 @@ class ReservationListScreen extends Screen
         }
 
         return back();
+    }
+
+    /**
+     * Cancel the specified reservation.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function cancelReservation(int $id)
+    {
+        $reservation = Reservation::findOrFail($id);
+
+        if ($reservation->status !== 'canceled') {
+            $reservation->update(['status' => 'canceled']);
+            Toast::info(__('The reservation has been successfully canceled.'));
+        } else {
+            Toast::warning(__('This reservation is already canceled.'));
+        }
+
+        return redirect()->route('platform.reservations');
+    }
+
+    /**
+     * Filter reservations based on the status.
+     *
+     * @param string $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function filterStatus(string $status)
+    {
+        if ($status === 'all') {
+            return redirect()->route('platform.reservations');
+        }
+
+        return redirect()->route('platform.reservations', ['filter[status]' => $status]);
     }
 }

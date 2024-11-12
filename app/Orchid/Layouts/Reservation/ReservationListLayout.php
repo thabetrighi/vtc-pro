@@ -38,17 +38,38 @@ class ReservationListLayout extends Table
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('pickup_location', __('Pickup Location'))
+            TD::make('status', __('Status'))
+                ->sort()
+                ->cantHide()
+                ->filter(Input::make())
+                ->render(function (Reservation $reservation) {
+                    // Define a color map for different statuses
+                    $statusColors = [
+                        'pending'   => 'warning',
+                        'ongoing'   => 'info',
+                        'completed' => 'success',
+                        'canceled'  => 'danger',
+                    ];
+
+                    // Get the status color or default to 'secondary'
+                    $color = $statusColors[$reservation->status] ?? 'secondary';
+
+                    // Render the status with a badge style
+                    return "<span class='badge bg-{$color}'>" . ucfirst($reservation->status) . "</span>";
+                }),
+
+
+            TD::make('pickup_location', __('Pickup'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('destination_location', __('Destination Location'))
+            TD::make('destination_location', __('Destination'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('passenger_name', __('Passenger Name'))
+            TD::make('passenger_name', __('Passenger'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
@@ -82,13 +103,6 @@ class ReservationListLayout extends Table
                                 ->route('platform.reservations.edit', $reservation->id)
                                 ->icon('bs.pencil'),
 
-                            Button::make('Download Invoice')
-                                ->method('downloadInvoice', [
-                                    'reservation' => $reservation->id,
-                                ])
-                                ->icon('bs.download')
-                                ->rawClick(),
-
                             Button::make('View Invoice')
                                 ->method('viewInvoice', [
                                     'reservation' => $reservation->id,
@@ -103,7 +117,30 @@ class ReservationListLayout extends Table
                                 ])
                                 ->icon('bs.envelope')
                                 ->rawClick(),
-                                
+
+                            Button::make('View Note')
+                                ->method('viewInvoice', [
+                                    'reservation' => $reservation->id,
+                                ])
+                                ->icon('bs.eye')
+                                ->rawClick()
+                                ->target('_blank'),
+
+                            Button::make('Send Note Email')
+                                ->method('sendInvoiceEmail', [
+                                    'reservation' => $reservation->id,
+                                ])
+                                ->icon('bs.envelope')
+                                ->rawClick(),
+
+                            // Cancel Reservation Button
+                            Button::make(__('Cancel Reservation'))
+                                ->icon('bs.x-circle')
+                                ->confirm(__('Are you sure you want to cancel this reservation?'))
+                                ->method('cancelReservation', [
+                                    'id' => $reservation->id,
+                                ]),
+
                             Button::make(__('Delete'))
                                 ->icon('bs.trash3')
                                 ->confirm(__('Once the reservation is deleted, all of its data will be permanently deleted. Before deleting the reservation, please ensure that you have downloaded any data or information that you wish to retain.'))

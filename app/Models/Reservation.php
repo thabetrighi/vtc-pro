@@ -16,12 +16,23 @@ class Reservation extends Model
     use HasFactory, SoftDeletes, AsSource, Filterable;
 
     /**
+     * Boot the model and add an observer for automatic status updating.
+     */
+    protected static function booted()
+    {
+        static::retrieved(function (Reservation $reservation) {
+            $reservation->updateStatusIfNeeded();
+        });
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
         'mode',
+        'status',
         'pickup_location',
         'destination_location',
         'pickup_street',
@@ -62,6 +73,7 @@ class Reservation extends Model
      * @var array
      */
     protected $allowedFilters = [
+        'status'                 => Where::class,              // Assumes mode can be searched by a substring
         'mode'                   => Where::class,              // Assumes mode can be searched by a substring
         'pickup_location'        => Like::class,              // Similar treatment for pickup location
         'destination_location'   => Like::class,              // For destination location
@@ -118,5 +130,25 @@ class Reservation extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    /**
+     * Update the status based on the `departure_at` and `arrival_at` timestamps if it's not canceled.
+     */
+    public function updateStatusIfNeeded(): void
+    {
+        if (in_array($this->status, ['canceled', 'completed'])) {
+            return;
+        }
+
+        $currentTime = now();
+
+        if ($this->end_at && $currentTime->greaterThanOrEqualTo($this->end_at)) {
+            $this->status = 'completed';
+            $this->save();
+        } elseif ($this->start_at && $currentTime->greaterThanOrEqualTo($this->start_at)) {
+            $this->status = 'ongoing';
+            $this->save();
+        }
     }
 }
