@@ -83,9 +83,9 @@ class ReservationEditScreen extends Screen
                 ->method('remove')
                 ->canSee($this->reservation->exists),
 
-            Button::make(__('Save'))
-                ->icon('bs.check-circle')
-                ->method('save'),
+            // Button::make(__('Save'))
+            //     ->icon('bs.check-circle')
+            //     ->method('save'),
         ];
     }
 
@@ -251,6 +251,15 @@ class ReservationEditScreen extends Screen
                         ->readonly()
                         ->canSee($this->reservation->exists),
                 ]),
+            ]),
+
+            Layout::rows([
+                Group::make([
+                    Button::make($this->reservation->exists ? __('Save') : __('Reservation'))
+                        ->icon('bs.check-circle')
+                        ->class('btn btn-black btn-lg btn-link icon-link p-2 px-4 rounded-3')
+                        ->method('save'),
+                ])->set('class', 'd-flex justify-content-center'),
             ])
         ];
     }

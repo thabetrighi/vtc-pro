@@ -53,11 +53,17 @@ class PlatformProvider extends OrchidServiceProvider
             //             ->permission('platform.reservations.list'),
             //     ]),
 
-            Menu::make(__('Reservations'))
+            Menu::make(__('Reservation'))
+                ->icon('bs.ticket')
+                ->route('platform.reservations.create')
+                ->permission('platform.reservations.create')
+                ->active('*/reservations/create'),
+
+            Menu::make(__('Reservations Management'))
                 ->icon('bs.ticket-detailed')
                 ->route('platform.reservations')
                 ->permission('platform.reservations.list')
-                ->badge(fn() => 6),
+                ->active('*/reservations'),
 
             Menu::make(__('Institutions'))
                 ->icon('bs.buildings')

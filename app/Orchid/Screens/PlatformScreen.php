@@ -33,7 +33,7 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return settings('dashboard_name', 'Taxi Booking Dashboard');
+        return config('app.name', 'Taxi Booking Dashboard') . ' ' . __('Dashboard');
     }
 
     /**
@@ -54,6 +54,8 @@ class PlatformScreen extends Screen
         return [
             Link::make(__('New Reservation'))
                 ->icon('bs.ticket-perforated')
+                ->class('border btn btn-lg btn-link btn-primary icon-link p-3 rounded-3')
+                ->permission('platform.reservations.create')
                 ->route('platform.reservations.create'),
         ];
     }
