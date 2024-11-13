@@ -20,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->bind(\Laravel\Fortify\Http\Controllers\PasswordResetLinkController::class, \App\Http\Controllers\Auth\PasswordResetLinkController::class);
+        $this->app->bind(\Laravel\Fortify\Actions\AttemptToAuthenticate::class, \App\Actions\Fortify\AttemptToAuthenticate::class);
         Dashboard::useModel(
             \Orchid\Platform\Models\User::class,
             \App\Models\User::class
