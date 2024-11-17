@@ -300,7 +300,7 @@ class ReservationEditScreen extends Screen
 
         try {
             // Define email language options
-            $invoiceLanguages = settings('invoice_languages', ['en']); // Default to 'en' if no setting
+            $invoiceLanguages = settings('invoice_languages', ['en', 'fr']) ?? ['en', 'fr'];
 
             // Send invoice to reservation user
             if ($reservation->user && $reservation->user->email) {
