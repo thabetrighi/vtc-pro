@@ -20,6 +20,10 @@ class Reservation extends Model
      */
     protected static function booted()
     {
+        static::creating(function (Reservation $reservation) {
+            $reservation->user_id = auth()->user()?->id;
+        });
+
         static::retrieved(function (Reservation $reservation) {
             $reservation->updateStatusIfNeeded();
         });

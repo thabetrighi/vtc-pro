@@ -206,10 +206,10 @@ class ReservationListScreen extends Screen
     public function sendInvoiceEmail(Reservation $reservation)
     {
         // Validate email existence
-        if (!$reservation->user?->email) {
-            Toast::error(__('No valid email address found for this reservation.'));
-            return back();
-        }
+        // if (!$reservation->user?->email) {
+        //     Toast::error(__('No valid email address found for this reservation.'));
+        //     return back();
+        // }
 
         try {
             // Define email language options
@@ -231,6 +231,7 @@ class ReservationListScreen extends Screen
 
             Toast::info(__('Invoice email sent successfully.'));
         } catch (\Exception $e) {
+            logDebug('email', [$e]);
             Toast::error(__('Failed to send invoice email. Please try again later.'));
         }
 
