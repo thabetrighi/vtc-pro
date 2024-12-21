@@ -12,7 +12,7 @@
         </small>
     </a>
 
-    {{-- <x-orchid-notification /> --}}
+    <x-orchid-notification />
 
-    <x-language-switcher />
+    {{-- <x-language-switcher /> --}}
 </div>
