@@ -22,8 +22,8 @@ class InstitutionRoleLayout extends Rows
             Select::make('institution.roles.')
                 ->fromModel(Role::class, 'name')
                 ->multiple()
-                ->title(__('Name role'))
-                ->help('Specify which groups this account should belong to'),
+                ->title(__('app.name_role'))
+                ->help('app.specify_which_groups_this_account_should_belong_to'),
         ];
     }
 }

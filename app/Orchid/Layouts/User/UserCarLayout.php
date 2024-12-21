@@ -52,7 +52,6 @@ class UserCarLayout extends Rows
             Input::make('user.car.registration_plate')
                 ->title('Registration Plate')
                 ->placeholder('Enter registration plate')
-                ->required()
                 ->help('The unique registration plate of the car.'),
         ];
     }

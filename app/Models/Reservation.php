@@ -35,6 +35,7 @@ class Reservation extends Model
      * @var array
      */
     protected $fillable = [
+        'reservation_type',
         'mode',
         'status',
         'pickup_location',
@@ -52,7 +53,7 @@ class Reservation extends Model
         'passenger_email',
         'passenger_phone',
         'passenger_count',
-        'additional_info',
+        'note_passenger',
         'alt_phone',
         'payment_method',
         'fare',

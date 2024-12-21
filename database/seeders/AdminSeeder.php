@@ -14,7 +14,7 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        $adminEmail = 'admin@monacib1.net';
+        $adminEmail = 'admin@monacib.com';
 
         // Check if an admin user already exists with this email
         $admin = User::where('email', $adminEmail)->first();

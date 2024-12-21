@@ -63,7 +63,7 @@ class InstitutionListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make(__('Add'))
+            Link::make(__('app.add'))
                 ->icon('bs.plus-circle')
                 ->route('platform.institutions.create'),
         ];
@@ -108,13 +108,13 @@ class InstitutionListScreen extends Screen
 
         $institution->fill($request->input('institution'))->save();
 
-        Toast::info(__('Institution was saved.'));
+        Toast::info(__('app.institution_saved_success'));
     }
 
     public function remove(Request $request): void
     {
         Institution::findOrFail($request->get('id'))->delete();
 
-        Toast::info(__('Institution was removed'));
+        Toast::info(__('app.institution_removed_success'));
     }
 }

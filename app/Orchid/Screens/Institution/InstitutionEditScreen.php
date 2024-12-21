@@ -69,13 +69,13 @@ class InstitutionEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Remove'))
+            Button::make(__('app.remove'))
                 ->icon('bs.trash3')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted.'))
+                ->confirm(__('app.account_delete_confirmation'))
                 ->method('remove')
                 ->canSee($this->institution->exists),
 
-            Button::make(__('Save'))
+            Button::make(__('app.save'))
                 ->icon('bs.check-circle')
                 ->method('save'),
         ];
@@ -92,39 +92,39 @@ class InstitutionEditScreen extends Screen
             Layout::rows([
                 Group::make([
                     Input::make('institution.name')
-                        ->title(__('Name'))
+                        ->title(__('app.name'))
                         ->required()
-                        ->placeholder(__('Enter institution name')),
+                        ->placeholder(__('app.enter_institution_name')),
 
                     Input::make('institution.zip_code')
-                        ->title(__('ZIP Code'))
-                        ->placeholder(__('Enter ZIP code')),
+                        ->title(__('app.zip_code'))
+                        ->placeholder(__('app.enter_zip_code')),
                 ]),
 
                 Group::make([
                     Input::make('institution.city')
-                        ->title(__('City'))
-                        ->placeholder(__('Enter city name')),
+                        ->title(__('app.city'))
+                        ->placeholder(__('app.enter_city_name')),
 
                     Input::make('institution.number')
-                        ->title(__('Building Number'))
-                        ->placeholder(__('Enter building number')),
+                        ->title(__('app.building_number'))
+                        ->placeholder(__('app.enter_building_number')),
                 ]),
 
                 Group::make([
                     Input::make('institution.street_name')
-                        ->title(__('Street Name'))
-                        ->placeholder(__('Enter street name')),
+                        ->title(__('app.street_name'))
+                        ->placeholder(__('app.enter_street_name')),
                 ]),
 
                 Group::make([
                     Input::make('institution.created_at')
-                        ->title(__('Created At'))
+                        ->title(__('app.created_at'))
                         ->readonly()
                         ->canSee($this->institution->exists),
 
                     Input::make('institution.updated_at')
-                        ->title(__('Updated At'))
+                        ->title(__('app.updated_at'))
                         ->readonly()
                         ->canSee($this->institution->exists),
                 ]),
@@ -152,7 +152,7 @@ class InstitutionEditScreen extends Screen
 
         $institution->fill($request->get('institution'))->save();
 
-        Toast::info(__('Institution was saved successfully.'));
+        Toast::info(__('app.institution_saved'));
 
         return redirect()->route('platform.institutions');
     }
@@ -168,7 +168,7 @@ class InstitutionEditScreen extends Screen
     {
         $institution->delete();
 
-        Toast::info(__('Institution was removed.'));
+        Toast::info(__('app.institution_removed'));
 
         return redirect()->route('platform.institutions');
     }

@@ -25,6 +25,7 @@ class ReservationSeeder extends Seeder
             $status = $this->determineStatus($departureAt, $currentDate);
 
             Reservation::create([
+                'reservation_type' => $faker->randomElement(['invoice', 'estimate']),
                 'mode' => $faker->randomElement(['transfer', 'ride']),
                 'pickup_location' => $faker->address,
                 'destination_location' => $faker->address,
@@ -51,7 +52,7 @@ class ReservationSeeder extends Seeder
                 'passenger_count' => $faker->numberBetween(1, 4),
 
                 // Additional information
-                'additional_info' => $faker->optional()->sentence,
+                'note_passenger' => $faker->optional()->sentence,
 
                 // Payment and pricing
                 'payment_method' => $faker->randomElement(['cash', 'card']),

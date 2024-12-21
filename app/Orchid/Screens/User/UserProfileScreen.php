@@ -83,40 +83,40 @@ class UserProfileScreen extends Screen
     {
         return [
             Layout::block(UserEditLayout::class)
-                ->title(__('Profile Information'))
-                ->description(__("Update your account's profile information and email address."))
+                ->title(__('app.profile_information'))
+                ->description(__("app.update_your_account_profile_information_and_email_address"))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC())
                         ->icon('bs.check-circle')
                         ->method('save')
                 ),
 
             Layout::block(UserInstitutionLayout::class)
-                ->title(__('Institution Assignment'))
-                ->description(__('Associate this user with their corresponding institution.'))
+                ->title(__('app.institution_assignment'))
+                ->description(__('app.institution_assignment'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->method('save')
                 ),
 
             Layout::block(UserCarLayout::class)
-                ->title(__('Vehicle Information'))
-                ->description(__('Manage user\'s vehicle details and assignments.'))
+                ->title(__('app.vehicle_information'))
+                ->description(__('app.manage_user_vehicle_details_and_assignments'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->method('save')
                 ),
 
             Layout::block(ProfilePasswordLayout::class)
-                ->title(__('Update Password'))
-                ->description(__('Ensure your account is using a long, random password to stay secure.'))
+                ->title(__('app.update_password'))
+                ->description(__('app.ensure_long_random_password'))
                 ->commands(
-                    Button::make(__('Update password'))
+                    Button::make(__('app.update_password_btn'))
                         ->type(Color::BASIC())
                         ->icon('bs.check-circle')
                         ->method('changePassword')
@@ -161,7 +161,7 @@ class UserProfileScreen extends Screen
             $request->user()->car()->create($carData); // Create a new car
         }
 
-        Toast::info(__('Profile updated.'));
+        Toast::info(__('app.profile_updated'));
     }
 
     public function changePassword(Request $request): void
@@ -176,6 +176,6 @@ class UserProfileScreen extends Screen
             $user->password = Hash::make($request->get('password'));
         })->save();
 
-        Toast::info(__('Password changed.'));
+        Toast::info(__('app.password_changed'));
     }
 }

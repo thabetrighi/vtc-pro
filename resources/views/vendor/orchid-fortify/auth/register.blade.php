@@ -1,9 +1,9 @@
 @extends('platform::auth')
-@section('title', __('Register'))
+@section('title', __('app.register'))
 
 @section('content')
 
-    <h1 class="h4 text-black mb-4">{{ __('Register') }}</h1>
+    <h1 class="h4 text-black mb-4">{{ __('app.register') }}</h1>
 
     <form
         role="form"
@@ -12,7 +12,7 @@
         data-turbo="{{ var_export(Str::startsWith(request()->path(), config('platform.prefix'))) }}"
         data-action="form#submit"
         data-form-button-animate="#button-login"
-        data-form-button-text="{{ __('Loading...') }}"
+        data-form-button-text="{{ __('app.loading') }}"
         action="{{ route('register') }}">
         @csrf
 
@@ -42,8 +42,8 @@
                 ->title('Password')
                 ->required()
                 ->autocomplete('new-password')
-                ->help('Use 8 or more characters with a mix of letters, numbers & symbols')
-                ->placeholder(__('Enter password'))
+                ->help('app.password_hint')
+                ->placeholder(__('app.enter_password'))
             !!}
         </div>
 
@@ -52,14 +52,14 @@
                 ->title('Confirm Password')
                 ->autocomplete('new-password')
                 ->required()
-                ->placeholder(__('Enter password'))
+                ->placeholder(__('app.enter_password'))
             !!}
         </div>
 
         <div class="row align-items-center">
             <div class="ml-auto col-md-6 col-xs-12">
                 <button id="button-login" type="submit" class="btn btn-default">
-                    {{ __('Register') }}
+                    {{ __('app.register') }}
                 </button>
             </div>
         </div>

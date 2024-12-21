@@ -33,7 +33,7 @@ class PlatformScreen extends Screen
      */
     public function name(): ?string
     {
-        return config('app.name', 'Taxi Booking Dashboard') . ' ' . __('Dashboard');
+        return config('app.name', 'Taxi Booking Dashboard') . ' ' . __('app.dashboard');
     }
 
     /**
@@ -41,7 +41,7 @@ class PlatformScreen extends Screen
      */
     public function description(): ?string
     {
-        return settings('dashboard_description', 'Real-time overview of booking metrics and performance');
+        return settings('dashboard_description', __('app.dashboard_description'));
     }
 
     /**
@@ -52,7 +52,7 @@ class PlatformScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Link::make(__('New Reservation'))
+            Link::make(__('app.new_reservation'))
                 ->icon('bs.ticket-perforated')
                 ->class('border btn btn-lg btn-link btn-primary icon-link p-3 rounded-3')
                 ->permission('platform.reservations.create')
@@ -69,10 +69,10 @@ class PlatformScreen extends Screen
     {
         return [
             Layout::metrics([
-                settings('metric_pending_title', 'Pending Reservations') => 'metrics.pending',
-                settings('metric_ongoing_title', 'Ongoing Reservations') => 'metrics.ongoing',
-                settings('metric_completed_title', 'Completed Reservations') => 'metrics.completed',
-                settings('metric_canceled_title', 'Canceled Reservations') => 'metrics.canceled',
+                settings('metric_pending_title', __('app.pending_reservations')) => 'metrics.pending',
+                settings('metric_ongoing_title', __('app.ongoing_reservations')) => 'metrics.ongoing',
+                settings('metric_completed_title', __('app.completed_reservations')) => 'metrics.completed',
+                settings('metric_canceled_title', __('app.canceled_reservations')) => 'metrics.canceled',
             ]),
         ];
     }

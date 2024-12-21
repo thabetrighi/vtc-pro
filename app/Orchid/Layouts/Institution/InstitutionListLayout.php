@@ -25,37 +25,37 @@ class InstitutionListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::make('name', __('Name'))
+            TD::make('name', __('app.name'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(fn(Institution $institution) => $institution->name),
 
-            TD::make('zip_code', __('ZIP Code'))
+            TD::make('zip_code', __('app.zip_code'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(fn(Institution $institution) => $institution->zip_code),
 
-            TD::make('city', __('City'))
+            TD::make('city', __('app.city'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(fn(Institution $institution) => $institution->city),
 
-            TD::make('number', __('Number'))
+            TD::make('number', __('app.number'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(fn(Institution $institution) => $institution->number),
 
-            TD::make('street_name', __('Street Name'))
+            TD::make('street_name', __('app.street_name'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
                 ->render(fn(Institution $institution) => $institution->street_name),
 
-            TD::make('user_count', __('Users'))
+            TD::make('user_count', __('app.users'))
                 ->align(TD::ALIGN_CENTER)
                 ->render(function (Institution $institution) {
                     return Link::make('Users (' . $institution->users()->count() . ')')
@@ -63,19 +63,19 @@ class InstitutionListLayout extends Table
                         ->icon('bs.people');
                 }),
 
-            TD::make(__('Actions'))
+            TD::make(__('app.actions'))
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
                 ->render(fn(Institution $institution) => DropDown::make()
                     ->icon('bs.three-dots-vertical')
                     ->list([
-                        Link::make(__('Edit'))
+                        Link::make(__('app.edit'))
                             ->route('platform.institutions.edit', $institution->id)
                             ->icon('bs.pencil'),
 
-                        Button::make(__('Delete'))
+                        Button::make(__('app.delete'))
                             ->icon('bs.trash3')
-                            ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                            ->confirm(__('app.account_delete_warning'))
                             ->method('remove', [
                                 'id' => $institution->id,
                             ]),

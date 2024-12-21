@@ -19,18 +19,18 @@ class ProfilePasswordLayout extends Rows
     {
         return [
             Password::make('old_password')
-                ->placeholder(__('Enter the current password'))
-                ->title(__('Current password'))
-                ->help('This is your password set at the moment.'),
+                ->placeholder(__('app.enter_current_password'))
+                ->title(__('app.current_password'))
+                ->help(__('app.this_is_your_password_set_at_the_moment')),
 
             Password::make('password')
-                ->placeholder(__('Enter the password to be set'))
-                ->title(__('New password')),
+                ->placeholder(__('app.enter_password_to_set'))
+                ->title(__('app.new_password')),
 
             Password::make('password_confirmation')
-                ->placeholder(__('Enter the password to be set'))
-                ->title(__('Confirm new password'))
-                ->help('A good password is at least 15 characters or at least 8 characters long, including a number and a lowercase letter.'),
+                ->placeholder(__('app.enter_password_to_set'))
+                ->title(__('app.confirm_new_password'))
+                ->help(__('app.a_good_password_is_at_least15_characters_or_at_least8_characters_long_including_a_number_and_a_lowercase_letter')),
         ];
     }
 }

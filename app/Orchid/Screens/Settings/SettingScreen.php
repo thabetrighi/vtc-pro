@@ -33,13 +33,13 @@ class SettingScreen extends Screen
 
     public function description(): ?string
     {
-        return 'Manage application settings, including general, company, email, and invoice details.';
+        return __('app.settings_desc');
     }
 
     public function commandBar(): array
     {
         return [
-            Button::make(__('Save'))
+            Button::make(__('app.save'))
                 ->icon('bs.check-circle')
                 ->method('saveSettings'),
         ];
@@ -65,13 +65,13 @@ class SettingScreen extends Screen
             Group::make([
                 Input::make('settings.site_name')
                     ->required()
-                    ->title('Site Name')
-                    ->placeholder('Enter the site name')
-                    ->help('This is the name displayed on the website.'),
+                    ->title(__('app.site_name'))
+                    ->placeholder(__('app.site_name_placeholder'))
+                    ->help(__('app.site_name_help')),
 
                 Input::make('settings.site_description')
-                    ->title('Site Description')
-                    ->placeholder('Describe the website purpose'),
+                    ->title(__('app.site_description'))
+                    ->placeholder(__('app.site_description_desc')),
             ]),
 
             // Group::make([
@@ -88,7 +88,7 @@ class SettingScreen extends Screen
 
             Group::make([
                 Cropper::make('settings.site_logo')
-                    ->title('Site Logo')
+                    ->title(__('app.site_logo'))
                     ->targetRelativeUrl()
                     ->width(100)
                     ->height(100)
@@ -96,7 +96,7 @@ class SettingScreen extends Screen
                     ->acceptedFiles('image/*'),
 
                 Cropper::make('settings.favicon')
-                    ->title('Favicon')
+                    ->title(__('app.favicon'))
                     ->targetRelativeUrl()
                     ->maxFileSize(1)
                     ->width(100)
@@ -112,31 +112,31 @@ class SettingScreen extends Screen
             Group::make([
                 Input::make('settings.company_name')
                     ->required()
-                    ->title('Company Name')
-                    ->placeholder('Company name'),
+                    ->title(__('app.company_name'))
+                    ->placeholder(__('app.company_name_placeholder')),
 
                 Input::make('settings.street_name')
-                    ->title('Street Name and Number'),
+                    ->title(__('app.street_name_and_number')),
             ]),
 
             Group::make([
                 Input::make('settings.zip_code')
-                    ->title('Zip Code')
+                    ->title(__('app.zip_code'))
                     ->mask('999999'),
 
                 Input::make('settings.city')
-                    ->title('City'),
+                    ->title(__('app.city')),
             ]),
 
             Group::make([
                 Cropper::make('settings.company_logo')
-                    ->title('Company Logo')
+                    ->title(__('app.company_logo'))
                     ->targetRelativeUrl()
                     ->maxFileSize(2)
                     ->acceptedFiles('image/*'),
 
                 Cropper::make('settings.company_stamp')
-                    ->title('Company Stamp + Signature')
+                    ->title(__('app.company_stamp_signature_setting'))
                     ->targetRelativeUrl()
                     ->maxFileSize(2)
                     ->acceptedFiles('image/*'),
@@ -144,25 +144,25 @@ class SettingScreen extends Screen
 
             Group::make([
                 Input::make('settings.vtc_register_number')
-                    ->title('VTC Register Number'),
+                    ->title(__('app.vtc_register_number')),
 
                 Input::make('settings.tva_number')
-                    ->title('TVA Number'),
+                    ->title(__('app.tva_number')),
             ]),
 
             Group::make([
                 Input::make('settings.siret_number')
-                    ->title('SIRET Number'),
+                    ->title(__('app.siret_number')),
 
                 Input::make('settings.company_phone')
-                    ->title('Company Phone')
+                    ->title(__('app.company_phone'))
                     ->mask('+99 999 999 999')
                     ->type('tel'),
             ]),
 
             Input::make('settings.company_email')
                 ->required()
-                ->title('Company Email')
+                ->title(__('app.company_email'))
                 ->type('email'),
         ]);
     }
@@ -179,11 +179,11 @@ class SettingScreen extends Screen
         return Layout::rows([
             Group::make([
                 TextArea::make('settings.note_general')
-                    ->title('General Note')
+                    ->title(__('app.general_note'))
                     ->rows(4),
 
                 TextArea::make('settings.note_invoice')
-                    ->title('Invoice Note')
+                    ->title(__('app.invoice_note'))
                     ->rows(4),
             ]),
 
@@ -204,29 +204,29 @@ class SettingScreen extends Screen
         return Layout::rows([
             Group::make([
                 Input::make('settings.vat_transfer')
-                    ->title('VAT for Transfer')
+                    ->title(__('app.vat_for_transfer'))
                     ->type('number')
                     ->min(0)
                     ->max(100)
                     ->placeholder('VAT percentage for transfer services'),
 
                 Input::make('settings.vat_ride')
-                    ->title('VAT for Ride')
+                    ->title(__('app.vat_for_ride'))
                     ->type('number')
                     ->min(0)
                     ->max(100)
-                    ->placeholder('VAT percentage for ride services'),
+                    ->placeholder(__('app.vat_for_ride_place_holder')),
             ]),
 
             Select::make('settings.invoice_languages')
-                ->title('Invoice Languages')
+                ->title(__('app.invoice_languages'))
                 ->required()
                 ->options([
                     'en' => 'English',
                     'fr' => 'French',
                 ])
                 ->multiple()
-                ->help('Choose invoice Languages'),
+                ->help(__('app.invoice_languages_help')),
         ]);
     }
 
@@ -335,7 +335,7 @@ class SettingScreen extends Screen
 
         Cache::forget('all_settings');
 
-        Alert::success('Settings saved successfully!');
+        Alert::success(__('app.settings_saved_successfully'));
         return redirect()->route('platform.settings');
     }
 }

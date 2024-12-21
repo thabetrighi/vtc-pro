@@ -28,17 +28,17 @@ class ReservationListLayout extends Table
     public function columns(): array
     {
         return [
-            TD::make('id', __('ID'))
+            TD::make('id', __('app.id'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('mode', __('Mode'))
+            TD::make('mode', __('app.transport_mode'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('status', __('Status'))
+            TD::make('status', __('app.status'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make())
@@ -59,32 +59,32 @@ class ReservationListLayout extends Table
                 }),
 
 
-            TD::make('pickup_location', __('Pickup'))
+            TD::make('pickup_location', __('app.pickup'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('destination_location', __('Destination'))
+            TD::make('destination_location', __('app.destination'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('passenger_name', __('Passenger'))
+            TD::make('passenger_name', __('app.passenger'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('departure_at', __('Departure Time'))
+            TD::make('departure_at', __('app.departure_time'))
                 ->usingComponent(DateTimeSplit::class)
                 ->align(TD::ALIGN_RIGHT)
                 ->sort(),
 
-            TD::make('fare', __('Fare'))
+            TD::make('fare', __('app.fare'))
                 ->sort()
                 ->cantHide()
                 ->filter(Input::make()),
 
-            TD::make('user', __('Booked By'))
+            TD::make('user', __('app.booked_by'))
                 ->render(function (Reservation $reservation) {
                     return optional($reservation->user)->name;
                 })
@@ -92,18 +92,18 @@ class ReservationListLayout extends Table
                 ->cantHide()
                 ->filter(Relation::make('user_id')->fromModel(User::class, 'name')),
 
-            TD::make(__('Actions'))
+            TD::make(__('app.actions'))
                 ->align(TD::ALIGN_CENTER)
                 ->width('100px')
                 ->render(function (Reservation $reservation) {
                     return DropDown::make()
                         ->icon('bs.three-dots-vertical')
                         ->list([
-                            Link::make(__('Edit'))
+                            Link::make(__('app.edit'))
                                 ->route('platform.reservations.edit', $reservation->id)
                                 ->icon('bs.pencil'),
 
-                            Button::make('View Invoice')
+                            Button::make(__('app.view_invoice'))
                                 ->method('viewInvoice', [
                                     'reservation' => $reservation->id,
                                 ])
@@ -111,14 +111,14 @@ class ReservationListLayout extends Table
                                 ->rawClick()
                                 ->target('_blank'),
 
-                            Button::make('Send Invoice Email')
+                            Button::make(__('app.send_invoice_email'))
                                 ->method('sendInvoiceEmail', [
                                     'reservation' => $reservation->id,
                                 ])
                                 ->icon('bs.envelope')
                                 ->rawClick(),
 
-                            Button::make('View Note')
+                            Button::make(__('app.view_note'))
                                 ->method('viewInvoice', [
                                     'reservation' => $reservation->id,
                                 ])
@@ -126,7 +126,7 @@ class ReservationListLayout extends Table
                                 ->rawClick()
                                 ->target('_blank'),
 
-                            Button::make('Send Note Email')
+                            Button::make('app.send_note_email')
                                 ->method('sendInvoiceEmail', [
                                     'reservation' => $reservation->id,
                                 ])
@@ -134,16 +134,16 @@ class ReservationListLayout extends Table
                                 ->rawClick(),
 
                             // Cancel Reservation Button
-                            Button::make(__('Cancel Reservation'))
+                            Button::make(__('app.cancel_reservation'))
                                 ->icon('bs.x-circle')
-                                ->confirm(__('Are you sure you want to cancel this reservation?'))
+                                ->confirm(__('app.confirm_cancel_reservation'))
                                 ->method('cancelReservation', [
                                     'id' => $reservation->id,
                                 ]),
 
-                            Button::make(__('Delete'))
+                            Button::make(__('app.delete'))
                                 ->icon('bs.trash3')
-                                ->confirm(__('Once the reservation is deleted, all of its data will be permanently deleted. Before deleting the reservation, please ensure that you have downloaded any data or information that you wish to retain.'))
+                                ->confirm(__('app.reservation_delete_warning'))
                                 ->method('removeReservation', [
                                     'id' => $reservation->id,
                                 ]),

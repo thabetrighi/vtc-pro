@@ -22,13 +22,13 @@ class InstitutionPasswordLayout extends Rows
         $institution = $this->query->get('institution');
 
         $placeholder = $institution->exists
-            ? __('Leave empty to keep current password')
-            : __('Enter the password to be set');
+            ? __('app.leave_empty_current_password')
+            : __('app.enter_password_to_set');
 
         return [
             Password::make('institution.password')
                 ->placeholder($placeholder)
-                ->title(__('Password')),
+                ->title(__('app.password')),
         ];
     }
 }

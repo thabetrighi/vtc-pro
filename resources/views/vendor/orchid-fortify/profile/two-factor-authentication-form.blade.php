@@ -1,9 +1,9 @@
-@if(\Laravel\Fortify\Features::canManageTwoFactorAuthentication())
+@if (\Laravel\Fortify\Features::canManageTwoFactorAuthentication())
 
-    @if(session('status') == 'two-factor-authentication-enabled')
+    @if (session('status') == 'two-factor-authentication-enabled')
         {{-- Show SVG QR Code, After Enabling 2FA --}}
         <div class="px-4 py-2">
-            {{ __('Two factor authentication is now enabled. Scan the following QR code using your phone\'s authenticator application.') }}
+            {{ __('app.two_factor_enabled') }}
         </div>
 
         <div class="text-center p-3">
@@ -11,10 +11,10 @@
         </div>
     @endif
 
-    @if(auth()->user()->two_factor_recovery_codes)
+    @if (auth()->user()->two_factor_recovery_codes)
         {{-- Show 2FA Recovery Codes --}}
         <div class="px-4 py-2">
-            {{ __('Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.') }}
+            {{ __('app.store_recovery_codes') }}
         </div>
 
         <div class="bg-light px-4 py-2">

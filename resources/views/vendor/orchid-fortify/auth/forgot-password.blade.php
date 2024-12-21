@@ -1,8 +1,8 @@
 @extends('platform::auth')
-@section('title', __('Forgot your password?'))
+@section('title', __('app.forgot_password'))
 
 @section('content')
-    <h1 class="h4 text-black mb-4">{{__('Forgot your password?')}}</h1>
+    <h1 class="h4 text-black mb-4">{{__('app.forgot_password')}}</h1>
 
     <form
         role="form"
@@ -11,7 +11,7 @@
         data-action="form#submit"
         data-turbo="{{ var_export(Str::startsWith(request()->path(), config('platform.prefix'))) }}"
         data-form-button-animate="#button-login"
-        data-form-button-text="{{ __('Loading...') }}"
+        data-form-button-text="{{ __('app.loading') }}"
         action="{{ route('password.email') }}">
         @csrf
 
@@ -22,7 +22,7 @@
         @endif
 
         <p>
-        {{ __('No problem. Just let us know your email address and we will email you a password reset link that will allow you to choose a new one.') }}
+        {{ __('app.forgot_password_detail') }}
         </p>
 
         <div class="form-group">
@@ -39,7 +39,7 @@
         <div class="row align-items-center">
             <div class="ml-auto col-md-8 col-xs-12">
                 <button id="button-login" type="submit" class="btn btn-default" tabindex="2">
-                    {{ __('Email Password Reset Link') }}
+                    {{ __('app.email_password_reset_link') }}
                 </button>
             </div>
         </div>

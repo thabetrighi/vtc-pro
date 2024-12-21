@@ -22,14 +22,14 @@ class ReservationEditLayout extends Rows
                 ->type('text')
                 ->max(255)
                 ->required()
-                ->title(__('Name'))
-                ->placeholder(__('Name')),
+                ->title(__('app.name'))
+                ->placeholder(__('app.name')),
 
             Input::make('reservation.email')
                 ->type('email')
                 ->required()
-                ->title(__('Email'))
-                ->placeholder(__('Email')),
+                ->title(__('app.email'))
+                ->placeholder(__('app.email')),
         ];
     }
 }

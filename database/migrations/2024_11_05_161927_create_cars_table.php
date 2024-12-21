@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('category')->nullable();            // Category of the car (e.g., Limousine, Sedan, SUV)
             $table->integer('seat_number')->nullable();        // Number of seats in the car
             $table->string('energy_type')->nullable();         // Type of energy (e.g., Electric, Gasoline, Diesel)
-            $table->string('registration_plate')->unique();    // Unique registration plate number of the car
+            $table->string('registration_plate')->unique()->nullable();    // Unique registration plate number of the car
 
             $table->foreignId('user_id')                       // Foreign key linking to the user's ID
                 ->nullable()                                   // Nullable to allow cars not yet assigned to a user

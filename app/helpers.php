@@ -29,12 +29,12 @@ if (!function_exists('logDebug')) {
      * Log a debug message.
      *
      * @param string $message
-     * @param array $context
+     * @param mixed $context
      * @return void
      */
-    function logDebug(string $message, array $context = []): void
+    function logDebug(string $message, mixed $context = []): void
     {
-        Log::debug($message, $context);
+        Log::debug($message, [$message => $context]);
     }
 }
 

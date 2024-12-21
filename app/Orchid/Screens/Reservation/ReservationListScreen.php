@@ -66,37 +66,37 @@ class ReservationListScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('All'))
+            Button::make(__('app.all'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'all'])
                 ->icon('bs.list')
                 ->class('btn btn-secondary gap-1 rounded'), // Styling as a secondary button
 
-            Button::make(__('Pending'))
+            Button::make(__('app.pending'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'pending'])
                 ->icon('bs.hourglass-split')
                 ->class('btn btn-warning gap-1 rounded'),
 
-            Button::make(__('Ongoing'))
+            Button::make(__('app.ongoing'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'ongoing'])
                 ->icon('bs.arrow-right-circle')
                 ->class('btn btn-info gap-1 rounded'),
 
-            Button::make(__('Completed'))
+            Button::make(__('app.completed'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'completed'])
                 ->icon('bs.check-circle')
                 ->class('btn btn-success gap-1 rounded'),
 
-            Button::make(__('Canceled'))
+            Button::make(__('app.canceled'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'canceled'])
                 ->icon('bs.x-circle')
                 ->class('btn btn-danger gap-1 rounded'),
 
-            Button::make(__('Past'))
+            Button::make(__('app.past'))
                 ->method('filterStatus')
                 ->parameters(['status' => 'past'])
                 ->icon('bs.clock-history')
@@ -144,14 +144,14 @@ class ReservationListScreen extends Screen
 
         $reservation->fill($request->input('reservation'))->save();
 
-        Toast::info(__('Reservation was saved.'));
+        Toast::info(__('app.reservation_saved_success'));
     }
 
     public function remove(Request $request): void
     {
         Reservation::findOrFail($request->get('id'))->delete();
 
-        Toast::info(__('Reservation was removed'));
+        Toast::info(__('app.reservation_removed_success'));
     }
 
     /**
@@ -207,7 +207,7 @@ class ReservationListScreen extends Screen
     {
         // Validate email existence
         // if (!$reservation->user?->email) {
-        //     Toast::error(__('No valid email address found for this reservation.'));
+        //     Toast::error(__('app.no_valid_email'));
         //     return back();
         // }
 
@@ -229,10 +229,10 @@ class ReservationListScreen extends Screen
                 }
             }
 
-            Toast::info(__('Invoice email sent successfully.'));
+            Toast::info(__('app.invoice_email_sent'));
         } catch (\Exception $e) {
             logDebug('email', [$e]);
-            Toast::error(__('Failed to send invoice email. Please try again later.'));
+            Toast::error(__('app.invoice_email_failed'));
         }
 
         return back();
@@ -250,9 +250,9 @@ class ReservationListScreen extends Screen
 
         if ($reservation->status !== 'canceled') {
             $reservation->update(['status' => 'canceled']);
-            Toast::info(__('The reservation has been successfully canceled.'));
+            Toast::info(__('app.reservation_canceled'));
         } else {
-            Toast::warning(__('This reservation is already canceled.'));
+            Toast::warning(__('app.reservation_already_canceled'));
         }
 
         return redirect()->route('platform.reservations');

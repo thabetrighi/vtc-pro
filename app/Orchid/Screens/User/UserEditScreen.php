@@ -77,19 +77,19 @@ class UserEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Impersonate user'))
+            Button::make(__('app.impersonate_user'))
                 ->icon('bg.box-arrow-in-right')
-                ->confirm(__('You can revert to your original state by logging out.'))
+                ->confirm(__('app.revert_to_original_state'))
                 ->method('loginAs')
                 ->canSee($this->user->exists && $this->user->id !== \request()->user()->id),
 
-            Button::make(__('Remove'))
+            Button::make(__('app.remove'))
                 ->icon('bs.trash3')
-                ->confirm(__('Once the account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.'))
+                ->confirm(__('app.account_delete_warning'))
                 ->method('remove')
                 ->canSee($this->user->exists),
 
-            Button::make(__('Save'))
+            Button::make(__('app.save'))
                 ->icon('bs.check-circle')
                 ->method('save'),
         ];
@@ -103,10 +103,10 @@ class UserEditScreen extends Screen
         return [
 
             Layout::block(UserEditLayout::class)
-                ->title(__('Profile Information'))
-                ->description(__('Update your account\'s profile information and email address.'))
+                ->title(__('app.profile_information'))
+                ->description(__('app.update_your_account_profile_information_and_email_address'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -114,10 +114,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserInstitutionLayout::class)
-                ->title(__('Institution Assignment'))
-                ->description(__('Associate this user with their corresponding institution.'))
+                ->title(__('app.institution_assignment'))
+                ->description(__('app.institution_assignment'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -125,10 +125,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserCarLayout::class)
-                ->title(__('Vehicle Information'))
-                ->description(__('Manage user\'s vehicle details and assignments.'))
+                ->title(__('app.vehicle_information'))
+                ->description(__('app.manage_user_vehicle_details_and_assignments'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -136,10 +136,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserPasswordLayout::class)
-                ->title(__('Password'))
-                ->description(__('Ensure your account is using a long, random password to stay secure.'))
+                ->title(__('app.password'))
+                ->description(__('app.ensure_long_random_password'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -147,10 +147,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(UserRoleLayout::class)
-                ->title(__('Roles'))
-                ->description(__('A Role defines a set of tasks a user assigned the role is allowed to perform.'))
+                ->title(__('app.roles'))
+                ->description(__('app.role_definition'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -158,10 +158,10 @@ class UserEditScreen extends Screen
                 ),
 
             Layout::block(RolePermissionLayout::class)
-                ->title(__('Permissions'))
-                ->description(__('Allow the user to perform some actions that are not provided for by his roles'))
+                ->title(__('app.permissions'))
+                ->description(__('app.user_additional_actions'))
                 ->commands(
-                    Button::make(__('Save'))
+                    Button::make(__('app.save'))
                         ->type(Color::BASIC)
                         ->icon('bs.check-circle')
                         ->canSee($this->user->exists)
@@ -227,7 +227,7 @@ class UserEditScreen extends Screen
             $user->car()->create($carData); // Create a new car
         }
 
-        Toast::info(__('User and car information was saved.'));
+        Toast::info(__('app.user_car_info_saved'));
 
         return redirect()->route('platform.systems.users');
     }
@@ -241,7 +241,7 @@ class UserEditScreen extends Screen
     {
         $user->delete();
 
-        Toast::info(__('User was removed'));
+        Toast::info(__('app.user_removed'));
 
         return redirect()->route('platform.systems.users');
     }
@@ -253,7 +253,7 @@ class UserEditScreen extends Screen
     {
         Impersonation::loginAs($user);
 
-        Toast::info(__('You are now impersonating this user'));
+        Toast::info(__('app.impersonating_user'));
 
         return redirect()->route(config('platform.index'));
     }

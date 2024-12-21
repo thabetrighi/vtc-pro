@@ -10,6 +10,7 @@ use App\Orchid\Screens\Settings\SettingTextEditorsScreen;
 use App\Orchid\Screens\PlatformScreen;
 use App\Orchid\Screens\Institution\InstitutionEditScreen;
 use App\Orchid\Screens\Institution\InstitutionListScreen;
+use App\Orchid\Screens\LanguageManager\LanguageManagerScreen;
 use App\Orchid\Screens\Reservation\ReservationEditScreen;
 use App\Orchid\Screens\Reservation\ReservationListScreen;
 use App\Orchid\Screens\Role\RoleEditScreen;
@@ -148,6 +149,12 @@ Route::screen('settings', SettingScreen::class)
     ->breadcrumbs(fn(Trail $trail) => $trail
         ->parent('platform.index')
         ->push('Setting Screen'));
+
+Route::screen('language-manager', LanguageManagerScreen::class)
+    ->name('platform.language-manager');
+
+Route::get('/change-language/{lang}', [LanguageManagerScreen::class, 'changeAppLang'])
+    ->name('platform.change-language');
 
 Route::screen('/settings/form/fields', SettingFieldsScreen::class)->name('platform.setting.fields');
 Route::screen('/settings/form/advanced', SettingFieldsAdvancedScreen::class)->name('platform.setting.advanced');

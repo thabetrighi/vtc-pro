@@ -77,13 +77,13 @@ class ReservationEditScreen extends Screen
     public function commandBar(): iterable
     {
         return [
-            Button::make(__('Remove'))
+            Button::make(__('app.remove'))
                 ->icon('bs.trash3')
-                ->confirm(__('Once the reservation is deleted, all of its data will be permanently deleted.'))
+                ->confirm(__('app.reservation_delete_permanent'))
                 ->method('remove')
                 ->canSee($this->reservation->exists),
 
-            // Button::make(__('Save'))
+            // Button::make(__('app.save'))
             //     ->icon('bs.check-circle')
             //     ->method('save'),
         ];
@@ -98,156 +98,170 @@ class ReservationEditScreen extends Screen
     {
         return [
 
-            Layout::rows([
-                Group::make([
-                    Select::make('reservation.mode')
-                        ->title(__('Mode'))
-                        ->options([
-                            'transfer' => 'Transfer',
-                            'ride' => 'Ride',
-                        ])
-                        ->help('Choose between a transfer or ride')
-                        ->required(),
+            Layout::columns([
+                Layout::rows([
+                    Group::make([
+                        Select::make('reservation.mode')
+                            // ->title(__('app.transport_mode'))
+                            ->options([
+                                'transfer' => __('app.transfer'),
+                                'ride' => __('app.ride'),
+                            ])
+                            ->help(__('app.choose_between_a_transfer_or_ride'))
+                            ->required(),
+                    ]),
+                ])->title(__('app.transport_mode')),
 
-                    DateTimer::make('reservation.departure_at')
-                        ->title(__('Departure Date and Time'))
-                        ->help('Scheduled pickup date and time')
-                        ->required()
-                        ->format24hr()
-                        ->enableTime(),
-                ]),
-            ])->title('Mode'),
+                Layout::rows([
+                    Group::make([
+                        DateTimer::make('reservation.departure_at')
+                            // ->title(__('app.departure_date_and_time'))
+                            ->help(__('app.scheduled_pickup_date_and_time'))
+                            ->required()
+                            ->format24hr()
+                            ->enableTime(),
+                    ]),
+                ])->title(__('app.date_et_heure_de_dpart')),
+            ]),
 
             Layout::columns([
                 Layout::rows([
                     Input::make('reservation.pickup_location')
-                        ->title(__('Number and Street'))
+                        ->title(__('app.number_and_street'))
                         // ->help('Main pickup location or landmark')
                         ->required()
-                        ->placeholder(__('Enter Number and Street')),
+                        ->placeholder(__('app.enter_number_and_street')),
 
                     Group::make([
                         Input::make('reservation.pickup_zip_code')
-                            ->title(__('ZIP Code'))
+                            ->title(__('app.zip_code'))
                             // ->help('ZIP/Postal code of pickup location')
                             ->nullable()
-                            ->placeholder(__('Enter pickup ZIP code')),
+                            ->placeholder(__('app.enter_pickup_zip_code')),
 
                         Input::make('reservation.pickup_city')
-                            ->title(__('City'))
+                            ->title(__('app.city'))
                             // ->help('City of pickup location')
                             ->nullable()
-                            ->placeholder(__('Enter pickup city')),
+                            ->placeholder(__('app.enter_pickup_city')),
                     ]),
 
                     TextArea::make('reservation.pickup_note')
-                        ->title(__('Note'))
-                        // ->help('Additional instructions for pickup location')
+                        ->title(__('app.pickup_note'))
+                        ->help(__('app.pickup_note_help'))
                         ->rows(3)
-                        ->placeholder(__('Enter pickup note')),
+                        ->placeholder(__('app.enter_pickup_note')),
 
-                ])->title('Pickup Locations'),
+                ])->title(__('app.pickup_locations')),
 
                 Layout::rows([
                     Input::make('reservation.destination_location')
-                        ->title(__('Number and Street'))
+                        ->title(__('app.number_and_street'))
                         // ->help('Main destination location or landmark')
                         ->required()
-                        ->placeholder(__('Enter Number and Street')),
+                        ->placeholder(__('app.enter_number_and_street')),
 
                     Group::make([
                         Input::make('reservation.destination_zip_code')
-                            ->title(__('ZIP Code'))
+                            ->title(__('app.zip_code'))
                             // ->help('ZIP/Postal code of destination')
                             ->nullable()
-                            ->placeholder(__('Enter destination ZIP code')),
+                            ->placeholder(__('app.enter_destination_zip_code')),
 
                         Input::make('reservation.destination_city')
-                            ->title(__('City'))
+                            ->title(__('app.city'))
                             // ->help('City of destination')
                             ->nullable()
-                            ->placeholder(__('Enter destination city')),
+                            ->placeholder(__('app.enter_destination_city')),
                     ]),
 
                     TextArea::make('reservation.destination_note')
-                        ->title(__('Note'))
-                        // ->help('Additional instructions for destination')
+                        ->title(__('app.destination_note'))
+                        ->help(__('app.destination_note_help'))
                         ->rows(3)
-                        ->placeholder(__('Enter destination note')),
+                        ->placeholder(__('app.enter_destination_note')),
 
-                ])->title('Destination Locations'),
+                ])->title(__('app.destination_locations')),
             ]),
 
             Layout::rows([
                 Group::make([
                     Input::make('reservation.passenger_name')
-                        ->title(__('Full Name'))
-                        ->help('First and Last name of the passenger')
+                        ->title(__('app.full_name'))
+                        ->help(__('app.first_and_last_name_of_the_passenger'))
                         ->required()
-                        ->placeholder(__('Enter First and Last name')),
+                        ->placeholder(__('app.enter_first_last_name')),
 
                     Input::make('reservation.passenger_email')
-                        ->title(__('Passenger Email'))
-                        ->help('Contact email for booking confirmation')
+                        ->title(__('app.passenger_email'))
+                        ->help(__('app.contact_email_for_booking_confirmation'))
                         ->type('email')
-                    // ->placeholder(__('Enter passenger email')),
+                    // ->placeholder(__('app.enter_passenger_email')),
                 ]),
                 Group::make([
                     Input::make('reservation.passenger_phone')
-                        ->title(__('Passenger Phone'))
+                        ->title(__('app.passenger_phone'))
                         // ->help('Primary contact number')
                         ->type('tel')
-                        ->placeholder(__('Enter passenger phone')),
+                        ->placeholder(__('app.enter_passenger_phone')),
 
                     Input::make('reservation.passenger_count')
-                        ->title(__('Passengers Count'))
-                        ->help('Total number of passengers')
+                        ->title(__('app.passengers_count'))
+                        ->help(__('app.total_number_of_passengers'))
                         ->type('number')
                         ->min(1)
                         ->required()
-                        ->placeholder(__('Enter passenger count')),
+                        ->placeholder(__('app.enter_passenger_count')),
                 ]),
-            ])->title('Passenger Info'),
+                // Note Passenger
+                Group::make([
+                    TextArea::make('reservation.note_passenger')
+                        ->title(__('app.note_passenger'))
+                        ->help(__('app.note_passenger_help'))
+                        ->rows(3)
+                ]),
+            ])->title(__('app.passenger_info')),
 
             Layout::rows([
                 // Departure and Payment
                 Group::make([
                     Select::make('reservation.payment_method')
-                        ->title(__('Payment Method'))
+                        ->title(__('app.payment_method'))
                         // ->help('Select payment method for the ride')
                         ->options([
-                            'cash' => 'Cash',
-                            'card' => 'Card',
+                            'cash' => __('app.cash'),
+                            'card' => __('app.card'),
                         ])
                         ->required(),
 
                     Input::make('reservation.fare')
-                        ->title(__('Fare'))
+                        ->title(__('app.fare'))
                         // ->help('Total cost of the ride')
                         ->type('number')
                         ->step(0.01)
                         ->required()
-                        ->placeholder(__('Enter fare')),
+                        ->placeholder(__('app.enter_fare')),
                 ]),
 
                 // Additional Info
                 Group::make([
                     TextArea::make('reservation.additional_info')
-                        ->title(__('Additional Information'))
-                        ->help('Any other relevant details about the reservation')
+                        ->placeholder(__('app.enter_additional_information'))
+                        ->readonly()
+                        ->disabled()
                         ->rows(3)
-                    // ->placeholder(__('Enter additional information')),
+                        ->style("max-width: 100%;")
                 ]),
 
                 // Timestamps
                 Group::make([
                     Input::make('reservation.created_at')
-                        ->title(__('Created At'))
+                        ->title(__('app.created_at'))
                         ->readonly()
                         ->canSee($this->reservation->exists),
 
                     Input::make('reservation.updated_at')
-                        ->title(__('Updated At'))
+                        ->title(__('app.updated_at'))
                         ->readonly()
                         ->canSee($this->reservation->exists),
                 ]),
@@ -255,13 +269,31 @@ class ReservationEditScreen extends Screen
 
             Layout::rows([
                 Group::make([
-                    Button::make($this->reservation->exists ? __('Save') : __('Reservation'))
+                    Button::make($this->reservation->exists ? __('app.save') : __('app.reservation'))
                         ->icon('bs.check-circle')
                         ->class('btn btn-black btn-lg btn-link icon-link p-2 px-4 rounded-3')
                         ->method('save'),
+
+                    Button::make(__('app.draft_reservation'))
+                        ->icon('bs.check-circle')
+                        ->class('btn btn-black btn-lg btn-link icon-link p-2 px-4 rounded-3')
+                        ->method('saveDraft')
+                        ->canSee(!$this->reservation->exists),
                 ])->set('class', 'd-flex justify-content-center'),
             ])
         ];
+    }
+
+    /**
+     * Save Draft reservation details.
+     *
+     * @param Reservation $reservation
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function saveDraft(Reservation $reservation, Request $request, $isDraft = false)
+    {
+        $this->save($reservation, $request, true);
     }
 
     /**
@@ -271,7 +303,7 @@ class ReservationEditScreen extends Screen
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function save(Reservation $reservation, Request $request)
+    public function save(Reservation $reservation, Request $request, $isDraft = false)
     {
         $request->validate([
             'reservation.mode'                 => ['required', 'in:transfer,ride'],
@@ -296,6 +328,10 @@ class ReservationEditScreen extends Screen
             'reservation.fare'                 => ['required', 'numeric', 'min:0'],
         ]);
 
+        if ($isDraft) {
+            $reservation->status = 'draft';
+        }
+
         $reservation->fill($request->get('reservation'))->save();
 
         try {
@@ -318,7 +354,7 @@ class ReservationEditScreen extends Screen
         } catch (\Exception $e) {
         }
 
-        Toast::info(__('Reservation was saved successfully.'));
+        Toast::info(__('app.reservation_saved'));
 
         return redirect()->route('platform.reservations');
     }
@@ -334,7 +370,7 @@ class ReservationEditScreen extends Screen
     {
         $reservation->delete();
 
-        Toast::info(__('Reservation was removed.'));
+        Toast::info(__('app.reservation_removed'));
 
         return redirect()->route('platform.reservations');
     }

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id();
+            $table->enum('reservation_type', ['invoice', 'estimate'])->default('invoice');
             $table->enum('mode', ['transfer', 'ride'])->default('ride'); // Mode: Transfer or Ride
-            $table->enum('status', ['pending', 'ongoing', 'completed', 'canceled'])->default('pending'); // New status column
+            $table->enum('status', ['draft', 'pending', 'ongoing', 'completed', 'canceled'])->default('pending'); // New status column
             $table->string('pickup_location');               // Pickup location
             $table->string('destination_location');          // Destination location
 
@@ -38,9 +39,7 @@ return new class extends Migration
             $table->string('passenger_email')->nullable();    // Passenger email
             $table->string('passenger_phone')->nullable();    // Passenger phone number
             $table->integer('passenger_count')->default(1);   // Number of passengers
-
-            // Additional information
-            $table->text('additional_info')->nullable();      // Additional information or special requests
+            $table->text('note_passenger')->nullable();       // Note Passenger
 
             // Payment and pricing
             $table->enum('payment_method', ['cash', 'card'])->default('cash'); // Payment method (Cash or Card)

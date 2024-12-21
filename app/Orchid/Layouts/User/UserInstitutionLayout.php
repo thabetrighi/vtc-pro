@@ -23,8 +23,8 @@ class UserInstitutionLayout extends Rows
                 ->fromModel(Institution::class, 'name')
                 ->empty()
                 ->orderBy('name')
-                ->title(__('Institutions'))
-                ->help(__('Select the institution this user has access to')),
+                ->title(__('app.institutions'))
+                ->help(__('app.select_institution_access')),
         ];
     }
 }
